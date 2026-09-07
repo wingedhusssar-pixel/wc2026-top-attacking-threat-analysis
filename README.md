@@ -36,7 +36,7 @@ and force an arbitrary weighting). The players on both lists are the standouts.
   appear on both. Those four are the genuine standouts.
 
 Messi carried Argentina on both the how-well and the how-much. Whether that makes
-him the tournament's best player is a judgment the data data settles.
+him the tournament's best player is a judgment no data settles.
 
 ## Data
 
