@@ -44,7 +44,7 @@ crosses zero.** That does not make the finishing axis meaningless. It tells you
 to read it as what happened in five games, not as settled skill. The creation
 axis needs no such heavy discount.
 
-## The profile that survives every filter
+## My Opinion: The profile that survives every filter
 
 Messi is the exception, and for a reason the analysis supports rather than
 contradicts. His standout number is not finishing, where uncertainty is widest (while it is strong),
