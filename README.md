@@ -48,11 +48,10 @@ diagonal (4.2 xA, 4 assists), his creation converted as expected.
 
 ## The profile that survives every filter
 
-On finishing, Messi is not the standout, his efficiency ranks sixth here. His
+On finishing, Messi is not the clear standout, his efficiency ranks sixth here. His
 singular trait is creation: 4.2 xA laps a field whose next best is 3.3, and the
 assist check confirms it is real. He posts it off the largest shot sample in the
-set, while still finishing above his own xG, at 39. Not the best finisher, but a
-genuinely above-average one who is also, by a wide and well-calibrated margin,
+set, while still finishing above his own xG, at 39. An elite scoring-threat and someone who is also, by a wide and well-calibrated margin,
 the best creator in the tournament.
 
 ## Data
