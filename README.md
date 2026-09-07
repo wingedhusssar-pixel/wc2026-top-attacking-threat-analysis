@@ -1,68 +1,56 @@
-# An honest expected-goals chart, and the profile that survives every filter
+# World Cup 2026 attackers: efficiency, volume, and who actually carried
 
-A popular World Cup 2026 player chart claimed to show finishing quality on its
-vertical axis. It did not. This project takes that chart apart, rebuilds it in
-Python, and then calibrates it: instead of trusting every point equally, it
-measures how firmly each one can be read. That discipline is what makes the one
-exceptional profile in the tournament stand out for a reason the statistics
-support.
+This project starts from a popular but flawed World Cup 2026 attacker chart,
+rebuilds it honestly, and then argues that no single view names who carried a
+team. It answers two separate questions, how efficient a player was and how much
+he did, states the blind spots of each, and ranks the top five on both.
 
-Full analysis, code and charts are in
-[`wc2026_xg_analysis.ipynb`](wc2026_xg_analysis.ipynb), which GitHub renders
+Full analysis and charts are in
+[`wc2026_full_analysis.ipynb`](wc2026_full_analysis.ipynb), which GitHub renders
 inline.
 
-## What was wrong with the original
+## The argument
 
-The source chart plotted attackers on a blended vertical axis of 0.3 x goals
-plus 0.7 x xG per 90, labeled as finishing quality. Three problems:
+A metric can claim to show one thing while measuring another. The original chart
+labeled its vertical axis "finishing" but blended goals and xG, which tracks shot
+volume, not finishing. The rebuild separates the questions:
 
-1. **The axis measured the wrong thing.** A blend of goals and xG tracks shot
-   volume and chance quality, not finishing. Real finishing is goals minus xG,
-   the overperformance the blended axis buries.
-2. **No creation dimension done right.** The rebuild uses xA, which credits the
-   quality of a chance created and does not punish a creator whose teammates miss.
-3. **Small samples treated as equal.** The rebuild applies a 350-minute floor and
-   sizes each dot by minutes, so cameo rates do not distort the picture.
+1. **Efficiency** (per 90): finishing as goals minus xG, creation as xA. Rewards
+   rate, but cannot see workload, a rested rotation player can post a strong rate
+   on a light load.
+2. **Volume** (totals): a six-metric radar of each quarter-finalist's top
+   attacker. Rewards output and durability, but cannot see quality, a wasteful
+   high-volume shooter still looks big.
 
-## A symmetric inclusion rule
+Because each view has a real blind spot, the top five is ranked on both
+separately rather than merged into one score (which would double-count creation
+and force an arbitrary weighting). The players on both lists are the standouts.
 
-A player is in the set if he generated **xG >= 1.3 OR xA >= 1.3** and played
-350+ minutes. Both gates use the same unit (expected goals), one for scoring and
-one for creating, so the two sides are comparable. This keeps pure finishers who
-shoot but rarely create, and pure creators who create but rarely shoot. The
-gates use xG and xA, not goals and assists, because expected values are the
-stabler signal over a five-game sample.
+## What the data says
 
-## Calibrating both axes
+- Efficiency: Messi leads creation by a wide margin; his finishing is
+  above-average, not elite (sixth).
+- Volume: Messi's radar is a near-full hexagon, the most complete of any team's
+  best attacker; he leads chances created (25) by a distance.
+- Both rankings: Messi tops each. Mbappe second on both. Dembele and Olise also
+  appear on both. Those four are the genuine standouts.
 
-**Finishing** rests on rare events. Modeling goals as Bernoulli trials over each
-player's real shot count gives a confidence band, and **18 of 19 bands cross
-zero**: over five games, finishing is rarely distinguishable from average.
-
-**Creation** rests on far more events, so xA is the stabler axis. Plotting xA
-against actual assists confirms it is real, not teammate luck: Messi sits on the
-diagonal (4.2 xA, 4 assists), his creation converted as expected.
-
-## The profile that survives every filter
-
-On finishing, Messi is not the standout, his overperformance ranks sixth. His
-singular trait is creation: he leads xA on both totals and per-90, so the lead is
-neither an artifact of playing the most minutes nor of a hot rate in a thin
-sample. It survives every adjustment. He posts it while finishing above his own
-xG, at 39. Not the best finisher, but a genuinely above-average one who is also,
-by a wide and well-calibrated margin, the best creator in the tournament.
+Messi carried Argentina on both the how-well and the how-much. Whether that makes
+him the tournament's best player is a judgment no data settles.
 
 ## Data
 
-Finishing (goals, xG, shots, efficiency): FIFA official World Cup 2026 stats.
-Creation (xA): FotMob. Each axis is single-source. Goals derived as xG times
-FIFA's xG-efficiency. 19 players, 350-min floor, symmetric xG-or-xA rule.
+Finishing (goals, xG, shots): Opta / FIFA. Creation (xA, chances created),
+dribbles, big chances created: FotMob. Crosses: Opta. Efficiency uses a
+350-minute floor; volume uses the top attacker per quarter-finalist. One
+tournament, so rate figures carry real uncertainty; metric and weighting choices
+are stated so they can be challenged.
 
 ## Stack
 
-Python, pandas, NumPy, matplotlib. Open the notebook to read it with charts, or:
+Python, pandas, NumPy, matplotlib.
 
 ```
 pip install pandas numpy matplotlib jupyterlab
-jupyter lab wc2026_xg_analysis.ipynb
+jupyter lab wc2026_full_analysis.ipynb
 ```
