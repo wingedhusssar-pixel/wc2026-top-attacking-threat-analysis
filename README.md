@@ -1,7 +1,8 @@
 # An honest expected-goals chart, and the one profile that survives it
 
-One popular World Cup 2026 player chart claimed to show finishing quality on its
-vertical axis. It did not, placing inaccurate weights that shifted data. This project takes that chart apart, rebuilds it
+A popular World Cup 2026 player chart claimed to show finishing quality on its vertical axis. It did not.
+
+...placing inaccurate weights that shifted data. This project takes that chart apart, rebuilds it
 honestly in Python, and then calibrates it: instead of trusting every point
 equally, it measures how firmly each one can be read. That calibration is also
 what makes the single exceptional profile in the tournament stand out for a
