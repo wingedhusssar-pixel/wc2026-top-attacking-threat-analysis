@@ -47,7 +47,7 @@ axis needs no such heavy discount.
 ## My Opinion: The profile that survives every filter
 
 Messi is the exception, and for a reason the analysis supports rather than
-contradicts. His standout number is not finishing, where uncertainty is widest (while it is strong),
+contradicts. His standout number is not finishing, where uncertainty is widest (while it is one of the strongest),
 it is creation, the axis built on the higher event count. His xA per 90 sits
 alone at the top of the field, off 530 minutes, not a cameo. He occupies the
 complete-attacker region, scoring above his expected goals while creating more
