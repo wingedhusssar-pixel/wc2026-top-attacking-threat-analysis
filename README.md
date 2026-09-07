@@ -1,14 +1,13 @@
 # An honest expected-goals chart, and the one profile that survives it
 
-A popular World Cup 2026 player chart claimed to show finishing quality on its vertical axis. It did not.
+A popular World Cup 2026 player chart claimed to show finishing quality on its
+vertical axis. It did not. This project takes that chart apart, rebuilds it in
+Python, and then calibrates it: instead of trusting every point equally, it
+measures how firmly each one can be read. That discipline is also what makes the
+single exceptional profile in the tournament stand out for a reason the
+statistics support.
 
-...placing inaccurate weights that shifted data. This project takes that chart apart, rebuilds it
-honestly in Python, and then calibrates it: instead of trusting every point
-equally, it measures how firmly each one can be read. That calibration is also
-what makes the single exceptional profile in the tournament stand out for a
-reason the statistics actually support.
-
-The full analysis, code, and charts are in
+Full analysis, code and charts are in
 [`wc2026_xg_analysis.ipynb`](wc2026_xg_analysis.ipynb), which GitHub renders
 inline.
 
@@ -18,67 +17,55 @@ The source chart plotted attackers on a blended vertical axis of 0.3 x goals
 plus 0.7 x xG per 90, labeled as finishing quality. Three problems:
 
 1. **The axis measured the wrong thing.** A blend of goals and xG tracks shot
-   volume and chance quality, not finishing. Real finishing is goals minus xG,
-   the overperformance the blended axis buries.
-2. **No creation dimension done right.** The rebuild uses xA per 90, which
-   credits the quality of a chance created and does not punish a creator whose
-   teammates miss.
-3. **Small samples treated as equal.** A cameo substitute on 90 minutes sat next
-   to a player who started every match. The rebuild applies a 270-minute floor
-   and sizes each dot by minutes.
+   volume and chance quality, not finishing. Real finishing is goals minus xG.
+2. **No creation dimension done right.** The rebuild uses xA, which credits the
+   quality of a chance created and does not punish a creator whose teammates miss.
+3. **Small samples treated as equal.** The rebuild sizes each dot by shots and
+   applies an output floor, so cameo samples do not distort the picture.
 
-## Calibrating the axes, not discarding them
+## The inclusion rule is symmetric
 
-The two axes rest on different numbers of events, and that decides how firmly
-each can be read.
+A player is in the set if he generated **xG >= 1.3 OR xA >= 1.3** across the
+tournament. Both gates use the same unit (expected goals), one for scoring and
+one for creating, so the two sides are directly comparable. This keeps two kinds
+of player a one-sided rule would drop: pure finishers who shoot but rarely
+create, and pure creators who create but rarely shoot.
 
-- **Finishing rests on rare events.** A player takes only a few shots a game, so
-  over five games his goals-minus-xG figure sits on a handful of chances. One
-  finish or one miss swings it hard.
-- **Creation rests on frequent events.** Chances created happen many times per
-  game, so xA accumulates over far more events in the same minutes and steadies
-  faster.
+The gates use xG and xA, not goals and assists, on purpose: the analysis trusts
+expected values over outcomes because five-game outcomes are noisy. A player with
+four assists on 0.9 xA is mostly the creation-side mirror of a lucky finisher.
 
-Putting a confidence band on finishing (goals modeled as Bernoulli trials, one
-per shot) shows the effect: **15 of 16 players have a 95% finishing band that
-crosses zero.** That does not make the finishing axis meaningless. It tells you
-to read it as what happened in five games, not as settled skill. The creation
-axis needs no such heavy discount.
+## Calibrating both axes
 
-## My Opinion: The profile that survives every filter
+**Finishing** rests on rare events (a few shots a game), so goals-minus-xG is
+noisy. Modeling goals as Bernoulli trials over each player's real shot count
+gives a confidence band, and **19 of 20 bands cross zero**: over five games,
+finishing is rarely distinguishable from average.
 
-Messi is the exception, and for a reason the analysis supports rather than
-contradicts. His standout number is not finishing, where uncertainty is widest (while it is one of the strongest),
-it is creation, the axis built on the higher event count. His xA per 90 sits
-alone at the top of the field, off 530 minutes, not a cameo. He occupies the
-complete-attacker region, scoring above his expected goals while creating more
-than any other player in the tournament, at 39. Strip out the small-sample
-finishing noise and the cameo distortions, hold only the metric that survives
-scrutiny, and one player is still out on his own. No five games prove a
-greatest-ever claim, but the data is fully consistent with a combination the
-historical record does not offer a clear second example of.
+**Creation** rests on far more events, so xA is the stabler axis. Plotting xA
+against actual assists confirms it is real, not teammate luck: Messi sits on the
+diagonal (4.2 xA, 4 assists), his creation converted as expected.
 
-## Charts
+## The profile that survives every filter
 
-- Finishing vs creation, minutes-weighted, no verdict quadrants
-- Finishing with 95% confidence bands, showing how firmly each can be read
-- Confidence band width shrinking as minutes grow, tournament vs full season
+On finishing, Messi is not the standout, his efficiency ranks sixth here. His
+singular trait is creation: 4.2 xA laps a field whose next best is 3.3, and the
+assist check confirms it is real. He posts it off the largest shot sample in the
+set, while still finishing above his own xG, at 39. Not the best finisher, but a
+genuinely above-average one who is also, by a wide and well-calibrated margin,
+the best creator in the tournament.
+
+## Data
+
+Finishing (goals, xG, shots, efficiency): FIFA official World Cup 2026 stats.
+Creation (xA): FotMob. Each axis is single-source. Goals are derived as xG times
+FIFA's xG-efficiency. 20 players, symmetric xG-or-xA inclusion rule.
 
 ## Stack
 
-Python, pandas, NumPy, matplotlib. Open the notebook to read it with charts, or
-run it:
+Python, pandas, NumPy, matplotlib. Open the notebook to read it with charts, or:
 
 ```
 pip install pandas numpy matplotlib jupyterlab
 jupyter lab wc2026_xg_analysis.ipynb
 ```
-
-## Data note
-
-Figures were compiled from FotMob's World Cup 2026 player stats during analysis
-(wc2026_attackers.csv). Per-90 xA was taken from FotMob's per-90 creation stats
-and cross-checked against published season totals, which agreed to within about
-0.02 for most players. The finishing model treats each player's total xG as a
-fixed expectation and goals as the random outcome, a standard first-order
-approximation rather than a full hierarchical model.
